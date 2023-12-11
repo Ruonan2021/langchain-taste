@@ -34,6 +34,8 @@ def run():
         Machine Learning and Data Science projects.
         **👈 Select a demo from the sidebar** to see some examples
         of what Streamlit can do!
+
+        ### How to start
         ### Want to learn more?
         - Check out [streamlit.io](https://streamlit.io)
         - Jump into our [documentation](https://docs.streamlit.io)
