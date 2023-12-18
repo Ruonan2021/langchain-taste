@@ -104,31 +104,16 @@ def run():
    
     # check box
     st.write("### Check box")
-    
     if st.checkbox('Show dataframe'):
-      st.button('Update data')
+
       left_column, right_column = st.columns(2)
       with left_column:
         st.write('Cached data')
         chart_data = generate_random_df(4, 4)
         chart_data
-        progress_bar()
       with right_column:
         st.write('Not Cached data')
         st.write(pd.DataFrame(np.random.randn(4, 3),columns=['a', 'b', 'c']))
-        'Starting a long computation...'
-
-        # Add a placeholder
-        latest_iteration = st.empty()
-        bar = st.progress(0)
-
-        for i in range(100):
-          # Update the progress bar with each iteration.
-          latest_iteration.text(f'Iteration {i+1}')
-          bar.progress(i + 1)
-          time.sleep(0.1)
-
-        '...and now we\'re done!'
 
     # select box
     st.write("### Select box")
@@ -141,7 +126,7 @@ def run():
     # layout, column layout
     left_column, right_column = st.columns(2)
     # You can use a column just like st.sidebar:
-    
+    left_column.button('Press me!')
     left_column.line_chart(df)
     # Or even better, call Streamlit functions inside a "with" block:
     with right_column:
@@ -149,6 +134,11 @@ def run():
             'Sorting hat',
             ("Gryffindor", "Ravenclaw", "Hufflepuff", "Slytherin"))
         st.write(f"You are in {chosen} house!")
+
+        progress_bar()
+
+
+
 
     st.write("### Session state")
     st.session_state

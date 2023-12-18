@@ -15,38 +15,9 @@
 import streamlit as st
 import pandas as pd
 import numpy as np
-import time
-import string
 from streamlit.logger import get_logger
 
 LOGGER = get_logger(__name__)
-
-@st.cache_data
-def generate_random_df(row_num, col_num):
-  col_name_string = string.ascii_lowercase[:col_num]
-
-  chart_data = pd.DataFrame(
-        np.random.randn(row_num, col_num),
-        columns=list(col_name_string)
-        )
-  
-  return chart_data
-
-@st.cache_resource
-def progress_bar():
-  'Starting a long computation...'
-
-  # Add a placeholder
-  latest_iteration = st.empty()
-  bar = st.progress(0)
-
-  for i in range(100):
-    # Update the progress bar with each iteration.
-    latest_iteration.text(f'Iteration {i+1}')
-    bar.progress(i + 1)
-    time.sleep(0.1)
-
-  '...and now we\'re done!'
 
 
 def run():
@@ -55,14 +26,12 @@ def run():
         page_icon="👋",
     )
 
-    df = pd.DataFrame({
-    'first column': [1, 2, 3, 4],
-    'second column': [10, 20, 30, 40]
-    })
-
     st.write("Interactive table:")
     #  can pass almost anything to st.write(): text, data, Matplotlib figures, Altair charts, and more. 
-    st.write(df)
+    st.write(pd.DataFrame({
+        'first column': [1, 2, 3, 4],
+        'second column': [10, 20, 30, 40]
+    }))
 
     # dataframe = np.random.randn(10, 20)
     # st.dataframe(dataframe)
@@ -78,15 +47,15 @@ def run():
 
     # static table
     st.write("Static table")
-    # st.table(df)
+    # st.table(dataframe2)
 
     st.write("Line chart")
     # Line chart
-    # chart_data = pd.DataFrame(
-    #  np.random.randn(20, 3),
-    #  columns=['a', 'b', 'c']
-    # )
-    st.line_chart(df)
+    chart_data = pd.DataFrame(
+     np.random.randn(20, 3),
+     columns=['a', 'b', 'c']
+    )
+    st.line_chart(chart_data)
 
     # plot a map
     st.write("Map")
@@ -97,61 +66,11 @@ def run():
 
     st.write("# Widgets👋")
     # slide bar
-    st.write("### Slide bar")
-    x = st.slider('x', key='slide bar 1')  # 👈 this is a widget
+    st.write("Slide bar")
+    x = st.slider('x')  # 👈 this is a widget
     st.write(x, 'squared is', x * x)
-    st.write("Note: \n\nThen every time a user interacts with a widget, Streamlit simply reruns your script from top to bottom, assigning the current state of the widget to your variable in the process.")
+    st.write("### Note: \n\nThen every time a user interacts with a widget, Streamlit simply reruns your script from top to bottom, assigning the current state of the widget to your variable in the process.")
    
-    # check box
-    st.write("### Check box")
-    
-    if st.checkbox('Show dataframe'):
-      st.button('Update data')
-      left_column, right_column = st.columns(2)
-      with left_column:
-        st.write('Cached data')
-        chart_data = generate_random_df(4, 4)
-        chart_data
-        progress_bar()
-      with right_column:
-        st.write('Not Cached data')
-        st.write(pd.DataFrame(np.random.randn(4, 3),columns=['a', 'b', 'c']))
-        'Starting a long computation...'
-
-        # Add a placeholder
-        latest_iteration = st.empty()
-        bar = st.progress(0)
-
-        for i in range(100):
-          # Update the progress bar with each iteration.
-          latest_iteration.text(f'Iteration {i+1}')
-          bar.progress(i + 1)
-          time.sleep(0.1)
-
-        '...and now we\'re done!'
-
-    # select box
-    st.write("### Select box")
-    option = st.selectbox('Which number do you like best?', df['first column'])
-    st.write('You selected: ', option)
-    # select box on the side bar
-    option2 = st.sidebar.selectbox('Which number do you like best? side', df['first column'])
-    st.sidebar.write('You selected side bar: ', option2)
-
-    # layout, column layout
-    left_column, right_column = st.columns(2)
-    # You can use a column just like st.sidebar:
-    
-    left_column.line_chart(df)
-    # Or even better, call Streamlit functions inside a "with" block:
-    with right_column:
-        chosen = st.radio(
-            'Sorting hat',
-            ("Gryffindor", "Ravenclaw", "Hufflepuff", "Slytherin"))
-        st.write(f"You are in {chosen} house!")
-
-    st.write("### Session state")
-    st.session_state
 
 
 

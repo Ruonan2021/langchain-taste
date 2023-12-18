@@ -104,9 +104,8 @@ def run():
    
     # check box
     st.write("### Check box")
-    
+    left_column.button('Update data')
     if st.checkbox('Show dataframe'):
-      st.button('Update data')
       left_column, right_column = st.columns(2)
       with left_column:
         st.write('Cached data')
