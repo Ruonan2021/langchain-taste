@@ -1,2 +1,5 @@
 .env
 data/
+.history
+cache
+pandasai.log
