@@ -3,3 +3,5 @@ data/
 .history
 cache/
 pandasai.log
+.devcontainer/
+__pycache__/
