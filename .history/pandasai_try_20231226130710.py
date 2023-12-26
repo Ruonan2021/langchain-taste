@@ -49,7 +49,7 @@ response = df.chat("Calculate the sum of the gdp of north american countries")
 
 df.chat("Describe how spend data varied overtimes")
 df.chat(
-    "Are there any seasonality trends? Tell me specific period for each year, split by spend, revenue, and volume, don't use plot"
+    "Are there any seasonality trends? Tell me specific period for each year, split by "
 )
 
 

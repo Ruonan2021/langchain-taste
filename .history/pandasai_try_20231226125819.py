@@ -36,7 +36,7 @@ from pandasai.llm import OpenAI
 #     }
 # )
 
-df = pd.read_csv("data/hc_model_data.csv")
+df = pd.read_csv("data/")
 
 load_dotenv()
 APY_KEY = os.environ["OPENAI_API_KEY"]
@@ -46,13 +46,5 @@ llm = OpenAI(api_token=APY_KEY)
 df = SmartDataframe(df, config={"llm": llm})
 
 response = df.chat("Calculate the sum of the gdp of north american countries")
-
-df.chat("Describe how spend data varied overtimes")
-df.chat(
-    "Are there any seasonality trends? Tell me specific period for each year, split by spend, revenue, and volume, don't use plot"
-)
-
-
-d
 print(response)
 # Output: 20901884461056
