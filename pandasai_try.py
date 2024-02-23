@@ -2,57 +2,42 @@ import os
 
 import pandas as pd
 from dotenv import load_dotenv
+from langchain.llms import OpenAI as Langchain_openai
 from pandasai import SmartDataframe
+from pandasai.helpers.openai_info import get_openai_callback
 from pandasai.llm import OpenAI
 
-# pandas dataframe
-# df = pd.DataFrame(
-#     {
-#         "country": [
-#             "United States",
-#             "United Kingdom",
-#             "France",
-#             "Germany",
-#             "Italy",
-#             "Spain",
-#             "Canada",
-#             "Australia",
-#             "Japan",
-#             "China",
-#         ],
-#         "gdp": [
-#             19294482071552,
-#             2891615567872,
-#             2411255037952,
-#             3435817336832,
-#             1745433788416,
-#             1181205135360,
-#             1607402389504,
-#             1490967855104,
-#             4380756541440,
-#             14631844184064,
-#         ],
-#         "happiness_index": [6.94, 7.16, 6.66, 7.07, 6.38, 6.4, 7.23, 7.22, 5.87, 5.12],
-#     }
-# )
+# OpenAI models
+# load_dotenv()
+# APY_KEY = os.environ["OPENAI_API_KEY"]
+# llm = OpenAI(api_token=APY_KEY)
+# below set API as environmet variable, could instantiate the OpenAI object without pass the API key
+# add temperature and seed to enhance determinism, avoid randomness of answer
+llm = OpenAI(temperature=0, seed=26)
+langchain_llm = Langchain_openai()
 
-df = pd.read_csv("data/hc_model_data.csv")
+# df = pd.read_csv("data/hc_model_data.csv")
+df = pd.read_excel("data/ms_sample.xlsx")
+# df.info()
 
-load_dotenv()
-APY_KEY = os.environ["OPENAI_API_KEY"]
-llm = OpenAI(api_token=APY_KEY)
 
 # convert to SmartDataframe
-df = SmartDataframe(df, config={"llm": llm})
-
-response = df.chat("Calculate the sum of the gdp of north american countries")
-
-df.chat("Describe how spend data varied overtimes")
-df.chat(
-    "Are there any seasonality trends? Tell me specific period for each year, split by spend, revenue, and volume, don't use plot"
+# conversational=False is supposed to display lower usage and cost
+df_smart = SmartDataframe(
+    df,
+    config={
+        "llm": llm,
+        # "llm": langchain_llm,
+        "conversational": False,
+        "custom_whitelisted_dependencies": ["re", "collections"],
+    },
 )
 
 
-d
-print(response)
-# Output: 20901884461056
+with get_openai_callback() as cb:
+    chat_content = (
+        "For osat less than 5, what are commonly mentioned complaints in comments "
+    )
+    response = df_smart.chat(chat_content)
+    print(response)
+    print(cb)
